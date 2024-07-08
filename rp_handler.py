@@ -237,8 +237,8 @@ def handler(job):
 
 if __name__ == "__main__":
     wait_for_service(f'{BASE_URI}/sdapi/v1/sd-models')
-    logger.info('A1111 Stable Diffusion API is ready')
-    logger.info('Starting RunPod Serverless...')
+    logger.info('A1111 Stable Diffusion API is ready (dubtor)')
+    logger.info('Starting RunPod Serverless (dubtor)...')
     runpod.serverless.start(
         {
             'handler': handler
