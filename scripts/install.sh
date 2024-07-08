@@ -28,7 +28,7 @@ echo "Installing xformers"
 pip3 install --no-cache-dir xformers==0.0.23.post1 --index-url https://download.pytorch.org/whl/cu118
 
 echo "Installing A1111 Web UI"
-wget https://raw.githubusercontent.com/ashleykleynhans/runpod-worker-a1111/main/install-automatic.py
+wget https://raw.githubusercontent.com/dubtor/runpod-worker-a1111/main/install-automatic.py
 python3 -m install-automatic --skip-torch-cuda-test
 
 echo "Cloning ControlNet extension repo"
@@ -67,25 +67,28 @@ echo "Installing RunPod Serverless dependencies"
 cd /workspace/stable-diffusion-webui
 pip3 install huggingface_hub runpod
 
-echo "Downloading Deliberate v2 model"
-cd /workspace/stable-diffusion-webui/models/Stable-diffusion
-aria2c -o deliberate_v2.safetensors https://huggingface.co/ashleykleynhans/a1111-models/resolve/main/Stable-diffusion/deliberate_v2.safetensors
+#echo "Downloading Deliberate v2 model"
+#cd /workspace/stable-diffusion-webui/models/Stable-diffusion
+#aria2c -o deliberate_v2.safetensors https://huggingface.co/ashleykleynhans/a1111-models/resolve/main/Stable-diffusion/deliberate_v2.safetensors
 
-echo "Downloading SDXL base model"
-aria2c -o sd_xl_base_1.0.safetensors https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors
+#echo "Downloading SDXL base model"
+#aria2c -o sd_xl_base_1.0.safetensors https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors
 
-echo "Downloading SDXL Refiner"
-aria2c -o sd_xl_refiner_1.0.safetensors https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0/resolve/main/sd_xl_refiner_1.0.safetensors
+#echo "Downloading SDXL Refiner"
+#aria2c -o sd_xl_refiner_1.0.safetensors https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0/resolve/main/sd_xl_refiner_1.0.safetensors
 
-echo "Downloading turboDiffusionXL v112 model"
-aria2c -o turboDiffusionXL_v112.safetensors https://huggingface.co/ashleykleynhans/a1111-models/resolve/main/Stable-diffusion/turboDiffusionXL_v112.safetensors
+#echo "Downloading turboDiffusionXL v112 model"
+#aria2c -o turboDiffusionXL_v112.safetensors https://huggingface.co/ashleykleynhans/a1111-models/resolve/main/Stable-diffusion/turboDiffusionXL_v112.safetensors
+
+echo "Downloading RunwayML's Stable Diffusion 1.5 Inpainting model"
+aria2c -o stable-diffusion-inpainting-1.5.safetensors https://huggingface.co/webui/stable-diffusion-inpainting/resolve/main/sd-v1-5-inpainting.safetensors
 
 echo "Downloading SD 1.5 VAE"
 cd /workspace/stable-diffusion-webui/models/VAE
 aria2c -o vae-ft-mse-840000-ema-pruned.safetensors https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse-840000-ema-pruned.safetensors
 
-echo "Downloading SDXL VAE"
-aria2c -o sdxl_vae.safetensors https://huggingface.co/madebyollin/sdxl-vae-fp16-fix/resolve/main/sdxl_vae.safetensors
+#echo "Downloading SDXL VAE"
+#aria2c -o sdxl_vae.safetensors https://huggingface.co/madebyollin/sdxl-vae-fp16-fix/resolve/main/sdxl_vae.safetensors
 
 echo "Downloading SD 1.5 ControlNet models"
 mkdir -p /workspace/stable-diffusion-webui/models/ControlNet
@@ -98,12 +101,12 @@ aria2c -o control_v11p_sd15_lineart.pth https://huggingface.co/lllyasviel/Contro
 aria2c -o control_v1p_sd15_brightness.safetensors https://huggingface.co/ioclab/ioc-controlnet/resolve/main/models/control_v1p_sd15_brightness.safetensors
 aria2c -o control_v11f1e_sd15_tile.pth https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11f1e_sd15_tile.pth
 
-echo "Downloading SDXL ControlNet models"
-aria2c -o diffusers_xl_canny_full.safetensors https://huggingface.co/lllyasviel/sd_control_collection/resolve/main/diffusers_xl_canny_full.safetensors
+#echo "Downloading SDXL ControlNet models"
+#aria2c -o diffusers_xl_canny_full.safetensors https://huggingface.co/lllyasviel/sd_control_collection/resolve/main/diffusers_xl_canny_full.safetensors
 
-echo "Downloading InstantID ControlNet models"
-aria2c -o ip-adapter_instant_id_sdxl.bin "https://huggingface.co/InstantX/InstantID/resolve/main/ip-adapter.bin?download=true"
-aria2c -o control_instant_id_sdxl.safetensors "https://huggingface.co/InstantX/InstantID/resolve/main/ControlNetModel/diffusion_pytorch_model.safetensors?download=true"
+#echo "Downloading InstantID ControlNet models"
+#aria2c -o ip-adapter_instant_id_sdxl.bin "https://huggingface.co/InstantX/InstantID/resolve/main/ip-adapter.bin?download=true"
+#aria2c -o control_instant_id_sdxl.safetensors "https://huggingface.co/InstantX/InstantID/resolve/main/ControlNetModel/diffusion_pytorch_model.safetensors?download=true"
 
 echo "Downloading Upscalers"
 mkdir -p /workspace/stable-diffusion-webui/models/ESRGAN
@@ -117,9 +120,9 @@ mkdir -p /workspace/logs
 echo "Installing config files"
 cd /workspace/stable-diffusion-webui
 rm webui-user.sh config.json ui-config.json
-wget https://raw.githubusercontent.com/ashleykleynhans/runpod-worker-a1111/main/webui-user.sh
-wget https://raw.githubusercontent.com/ashleykleynhans/runpod-worker-a1111/main/config.json
-wget https://raw.githubusercontent.com/ashleykleynhans/runpod-worker-a1111/main/ui-config.json
+wget https://raw.githubusercontent.com/dubtor/runpod-worker-a1111/main/webui-user.sh
+wget https://raw.githubusercontent.com/dubtor/runpod-worker-a1111/main/config.json
+wget https://raw.githubusercontent.com/dubtor/runpod-worker-a1111/main/ui-config.json
 
 echo "Starting A1111 Web UI"
 deactivate
