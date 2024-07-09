@@ -8,6 +8,10 @@ rm -rf /workspace/venv
 echo "Cloning A1111 repo to /workspace"
 cd /workspace
 git clone --depth=1 https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
+cd stable-diffusion-webui
+
+# Using the latest version of Stable Diffusion WebUI. If this ever breaks, revert to commit 'feee37d' (commented out below)
+# git reset --hard feee37d
 
 echo "Installing Ubuntu updates"
 apt update
@@ -17,7 +21,6 @@ echo "Installing bc and aria2 Ubuntu packages"
 apt -y install bc aria2
 
 echo "Creating and activating venv"
-cd stable-diffusion-webui
 python3 -m venv /workspace/venv
 source /workspace/venv/bin/activate
 
@@ -73,17 +76,17 @@ cd /workspace/stable-diffusion-webui/models/Stable-diffusion
 echo "Downloading RunwayML's Stable Diffusion 1.5 Inpainting model"
 aria2c -o stable-diffusion-inpainting-1.5.safetensors https://huggingface.co/webui/stable-diffusion-inpainting/resolve/main/sd-v1-5-inpainting.safetensors
 
-#echo "Downloading Deliberate v2 model"
-#aria2c -o deliberate_v2.safetensors https://huggingface.co/ashleykleynhans/a1111-models/resolve/main/Stable-diffusion/deliberate_v2.safetensors
+# echo "Downloading Deliberate v2 model"
+# aria2c -o deliberate_v2.safetensors https://huggingface.co/ashleykleynhans/a1111-models/resolve/main/Stable-diffusion/deliberate_v2.safetensors
 
-#echo "Downloading SDXL base model"
-#aria2c -o sd_xl_base_1.0.safetensors https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors
+# echo "Downloading SDXL base model"
+# aria2c -o sd_xl_base_1.0.safetensors https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors
 
-#echo "Downloading SDXL Refiner"
-#aria2c -o sd_xl_refiner_1.0.safetensors https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0/resolve/main/sd_xl_refiner_1.0.safetensors
+echo "Downloading SDXL Refiner"
+aria2c -o sd_xl_refiner_1.0.safetensors https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0/resolve/main/sd_xl_refiner_1.0.safetensors
 
-#echo "Downloading turboDiffusionXL v112 model"
-#aria2c -o turboDiffusionXL_v112.safetensors https://huggingface.co/ashleykleynhans/a1111-models/resolve/main/Stable-diffusion/turboDiffusionXL_v112.safetensors
+# echo "Downloading turboDiffusionXL v112 model"
+# aria2c -o turboDiffusionXL_v112.safetensors https://huggingface.co/ashleykleynhans/a1111-models/resolve/main/Stable-diffusion/turboDiffusionXL_v112.safetensors
 
 echo "=== Stable Diffusion VAE ==="
 cd /workspace/stable-diffusion-webui/models/VAE
@@ -91,8 +94,8 @@ cd /workspace/stable-diffusion-webui/models/VAE
 echo "Downloading SD 1.5 VAE"
 aria2c -o vae-ft-mse-840000-ema-pruned.safetensors https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse-840000-ema-pruned.safetensors
 
-#echo "Downloading SDXL VAE"
-#aria2c -o sdxl_vae.safetensors https://huggingface.co/madebyollin/sdxl-vae-fp16-fix/resolve/main/sdxl_vae.safetensors
+# echo "Downloading SDXL VAE"
+# aria2c -o sdxl_vae.safetensors https://huggingface.co/madebyollin/sdxl-vae-fp16-fix/resolve/main/sdxl_vae.safetensors
 
 echo "Downloading SD 1.5 ControlNet models"
 mkdir -p /workspace/stable-diffusion-webui/models/ControlNet
