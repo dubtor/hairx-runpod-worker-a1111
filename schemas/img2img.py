@@ -247,9 +247,9 @@ IMG2IMG_SCHEMA = {
         'default': 1
     },
     'initial_noise_multiplier': {
-        'type': int,
+        'type': float,
         'required': False,
-        'default': 1
+        'default': 1.0
     },
     'latent_mask': {
         'type': str,
