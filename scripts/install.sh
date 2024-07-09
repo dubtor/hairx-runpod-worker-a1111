@@ -10,6 +10,14 @@ cd /workspace
 git clone --depth=1 https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
 cd stable-diffusion-webui
 
+# fix a bug in the Stable Diffusion repo with masks not working
+# see fix from @quanwuji at https://github.com/AUTOMATIC1111/stable-diffusion-webui/issues/9779
+file="/workspace/stable-diffusion-webui/modules/processing.py"
+search_string="latent_mask = self.latent_mask if self.latent_mask is not None else image_mask"
+replace_string="latent_mask = self.latent_mask if self.latent_mask is not None and self.latent_mask!=\"\" else image_mask"
+sed -i "s|$search_string|$replace_string|" "$file"
+
+
 # Using the latest version of Stable Diffusion WebUI. If this ever breaks, revert to commit 'feee37d' (commented out below)
 # git reset --hard feee37d
 
