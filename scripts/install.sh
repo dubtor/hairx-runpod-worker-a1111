@@ -67,8 +67,13 @@ echo "Installing RunPod Serverless dependencies"
 cd /workspace/stable-diffusion-webui
 pip3 install huggingface_hub runpod
 
+echo "=== Stable Diffusion models ==="
+cd /workspace/stable-diffusion-webui/models/Stable-diffusion
+
+echo "Downloading RunwayML's Stable Diffusion 1.5 Inpainting model"
+aria2c -o stable-diffusion-inpainting-1.5.safetensors https://huggingface.co/webui/stable-diffusion-inpainting/resolve/main/sd-v1-5-inpainting.safetensors
+
 #echo "Downloading Deliberate v2 model"
-#cd /workspace/stable-diffusion-webui/models/Stable-diffusion
 #aria2c -o deliberate_v2.safetensors https://huggingface.co/ashleykleynhans/a1111-models/resolve/main/Stable-diffusion/deliberate_v2.safetensors
 
 #echo "Downloading SDXL base model"
@@ -80,11 +85,10 @@ pip3 install huggingface_hub runpod
 #echo "Downloading turboDiffusionXL v112 model"
 #aria2c -o turboDiffusionXL_v112.safetensors https://huggingface.co/ashleykleynhans/a1111-models/resolve/main/Stable-diffusion/turboDiffusionXL_v112.safetensors
 
-echo "Downloading RunwayML's Stable Diffusion 1.5 Inpainting model"
-aria2c -o stable-diffusion-inpainting-1.5.safetensors https://huggingface.co/webui/stable-diffusion-inpainting/resolve/main/sd-v1-5-inpainting.safetensors
+echo "=== Stable Diffusion VAE ==="
+cd /workspace/stable-diffusion-webui/models/VAE
 
 echo "Downloading SD 1.5 VAE"
-cd /workspace/stable-diffusion-webui/models/VAE
 aria2c -o vae-ft-mse-840000-ema-pruned.safetensors https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse-840000-ema-pruned.safetensors
 
 #echo "Downloading SDXL VAE"
