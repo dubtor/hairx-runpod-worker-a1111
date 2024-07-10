@@ -104,7 +104,7 @@
     "sdxl_refiner_high_aesthetic_score": 6.0,
     "sd_vae_explanation": "<abbr title='Variational autoencoder'>VAE</abbr> is a neural network that transforms a standard <abbr title='red/green/blue'>RGB</abbr>\nimage into latent space representation and back. Latent space representation is what stable diffusion is working on during sampling\n(i.e. when the progress bar is between empty and full). For txt2img, VAE is used to create a resulting image after the sampling is finished.\nFor img2img, VAE is used to process user's input image before the sampling, and to create an image after sampling.",
     "sd_vae_checkpoint_cache": 0,
-    "sd_vae": "Automatic",
+    "sd_vae": "vae-ft-mse-840000-ema-pruned.safetensors",
     "sd_vae_overrides_per_model_preferences": true,
     "auto_vae_precision": true,
     "sd_vae_encode_method": "Full",
