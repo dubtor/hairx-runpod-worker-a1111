@@ -37,7 +37,7 @@ def wait_for_service(url):
         try:
             requests.get(url)
             return
-        except requests.exceptions.RequestException:
+        except requests.exceptions.RequestException as err:
             retries += 1
 
             # Only log every 15 retries so the logs don't get spammed
