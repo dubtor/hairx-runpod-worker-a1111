@@ -46,33 +46,9 @@ echo "Cloning ControlNet extension repo"
 cd /workspace/stable-diffusion-webui
 git clone --depth=1 https://github.com/Mikubill/sd-webui-controlnet.git extensions/sd-webui-controlnet
 
-echo "Cloning the ReActor extension repo"
-git clone https://github.com/Gourieff/sd-webui-reactor.git extensions/sd-webui-reactor
-git checkout v0.6.1
-
-echo "Cloning the After Detailer extension repo"
-git clone --depth=1 https://github.com/Bing-su/adetailer.git extensions/adetailer
-
 echo "Installing dependencies for ControlNet"
 cd /workspace/stable-diffusion-webui/extensions/sd-webui-controlnet
 pip3 install -r requirements.txt
-
-echo "Installing dependencies for ReActor"
-cd /workspace/stable-diffusion-webui/extensions/sd-webui-reactor
-pip3 install -r requirements.txt
-pip3 install onnxruntime-gpu
-
-echo "Installing dependencies for After Detailer"
-cd /workspace/stable-diffusion-webui/extensions/adetailer
-python3 -m install
-
-echo "Installing the model for ReActor"
-mkdir -p /workspace/stable-diffusion-webui/models/insightface
-cd /workspace/stable-diffusion-webui/models/insightface
-aria2c -o inswapper_128.onnx https://github.com/facefusion/facefusion-assets/releases/download/models/inswapper_128.onnx
-
-echo "Configuring ReActor to use the GPU instead of CPU"
-echo "CUDA" > /workspace/stable-diffusion-webui/extensions/sd-webui-reactor/last_device.txt
 
 echo "Installing RunPod Serverless dependencies"
 cd /workspace/stable-diffusion-webui
@@ -90,8 +66,8 @@ aria2c -o stable-diffusion-inpainting-1.5.safetensors https://huggingface.co/web
 # echo "Downloading SDXL base model"
 # aria2c -o sd_xl_base_1.0.safetensors https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors
 
-echo "Downloading SDXL Refiner"
-aria2c -o sd_xl_refiner_1.0.safetensors https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0/resolve/main/sd_xl_refiner_1.0.safetensors
+#echo "Downloading SDXL Refiner"
+#aria2c -o sd_xl_refiner_1.0.safetensors https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0/resolve/main/sd_xl_refiner_1.0.safetensors
 
 # echo "Downloading turboDiffusionXL v112 model"
 # aria2c -o turboDiffusionXL_v112.safetensors https://huggingface.co/ashleykleynhans/a1111-models/resolve/main/Stable-diffusion/turboDiffusionXL_v112.safetensors

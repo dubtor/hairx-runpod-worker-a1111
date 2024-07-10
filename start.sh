@@ -8,6 +8,7 @@ rm -rf /workspace && \
 
 if [ -f "/workspace/venv/bin/activate" ]; then
     echo "Starting WebUI API"
+    echo "(this continues in the background and can take quite some time)"
     source /workspace/venv/bin/activate
     TCMALLOC="$(ldconfig -p | grep -Po "libtcmalloc.so.\d" | head -n 1)"
     export LD_PRELOAD="${TCMALLOC}"
