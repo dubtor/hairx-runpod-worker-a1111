@@ -30,6 +30,7 @@ logger = RunPodLogger()
 # ---------------------------------------------------------------------------- #
 
 def wait_for_service(url):
+    logger.info(f'Querying URL {url} to see if Auto1111 service is already up...')
     retries = 0
 
     while True:
@@ -41,7 +42,7 @@ def wait_for_service(url):
 
             # Only log every 15 retries so the logs don't get spammed
             if retries % 15 == 0:
-                logger.info('Service not ready yet. Retrying...')
+                logger.info(f'Service not ready yet. Retrying... ({err})')
         except Exception as err:
             logger.error(f'Error: {err}')
 
