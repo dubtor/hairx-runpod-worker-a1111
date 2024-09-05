@@ -39,10 +39,17 @@ def wait_for_service(url):
             return
         except requests.exceptions.RequestException as err:
             retries += 1
-
             # Only log every 15 retries so the logs don't get spammed
             if retries % 15 == 0:
                 logger.info(f'Service not ready yet. Retrying... ({err})')
+            # Log the contents of the webui.log file every 150 retries
+            if retries % 150 == 0:
+                try:
+                    with open('/workspace/logs/webui.log', 'r') as log_file:
+                        log_contents = log_file.read()
+                        logger.info(f'Contents of webui.log after {retries} retries:\n{log_contents}')
+                except Exception as log_err:
+                    logger.error(f'Error reading webui.log: {log_err}')
         except Exception as err:
             logger.error(f'Error: {err}')
 
@@ -219,18 +226,22 @@ def handler(job):
         if response.status_code == 200:
             return response.json()
         else:
-            logger.error(f'HTTP Status code: {response.status_code}', job['id'])
-            logger.error(f'Response: {response.json()}', job['id'])
+            logger.error(f'A1111 HTTP Status code: {response.status_code}', job['id'])
+            logger.error(f'A1111 Response: {response.json()}', job['id'])
 
+            # don't restart the worker since the A1111 service is mostly likely working fine, we just passed wrong arguments or so
             return {
                 'error': f'A1111 status code: {response.status_code}',
                 'output': response.json()
             }
     except Exception as e:
-        logger.error(f'An exception was raised: {e}')
-
+        logger.error(f'An exception was raised when querying local A111 service: {e}')
+        logger.info(f'Marking worker for restart, since service might be down or broken...')
+        
+        # mark worker for restart since an exception might indicate a problem with A1111 (e.g. A1111 is no longer running)
         return {
-            'error': traceback.format_exc()
+            'error': traceback.format_exc(),
+            'refresh_worker': True
         }
 
 
