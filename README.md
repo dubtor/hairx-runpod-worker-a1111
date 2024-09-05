@@ -1,4 +1,88 @@
-<div align="center">
+# HairX - RunPod Worker for Automatic1111 Stable Diffusion
+
+This part of the HairX image generation software is used to set up and run a StableDiffusion installation on a RunPod serverless environment. When properly set up, it exposes a public Stable Diffusion API we can call to generate images with our self-hosted Stable Diffusion environment, based on the Auto1111 SD WebUI.
+
+## System Architecture
+
+This setup requires two main components:
+
+1. A RunPod serverless endpoint: Runs the Docker image and exposes the API.
+2. A Network Volume: Stores models and other necessary files.
+
+This repository provides:
+- All data needed to build the Docker image for the serverless worker
+- Instructions for installing data on the Network Volume
+
+Key points:
+
+- The Network Volume is set up once, with models and data installed. It remains persistent on the internet, incurring ongoing storage costs.
+- The RunPod serverless endpoint is configured once but spawns workers on demand:
+  - When needed, a worker pulls the Docker image and starts a container
+  - When idle, the worker terminates and the container stops
+
+To optimize performance:
+- The Docker image is kept relatively small
+- Stable Diffusion Web UI and models are stored on the Network Volume
+- This approach balances startup times with the slight delay of accessing files over the internet connection between the RunPod worker and Network Volume
+- Overall, this method is faster than using a very large Docker image
+
+## Installation & Setup
+
+### Step 1/3 - Set up the Network Volume
+
+1. Log into https://www.runpod.io/
+
+2. Ensure you have at least 20-30$ topped on your account
+
+3. Create new empty network volume (50+ GB)
+
+4. Deploy a temporary pod to install data on the network volume
+	> select lightweight template like „RunPod Pytorch 2.1“
+	> choose your network volume
+
+5. For the pod, select „Connect to JupyterLab [8888]“
+
+6. Open Terminal
+
+7. In current folder, install data onto the volume by running an install script:
+
+    ```
+    wget https://raw.githubusercontent.com/dubtor/hairx-runpod-worker-a1111/main/scripts/install.sh
+    chmod +x install.sh
+    ./install.sh
+    ```
+
+    NOTE: this script is actually part of the current repository.
+
+    Installation takes around 30mins. New models need to be added to the script.
+
+1.8 Wait until the terminal concludes with „Model loaded in XXXXs“
+
+1.9 Ctrl+C, close the terminal
+
+1.10 Terminate the pod, network volume is ready
+
+### Step 2/3 - Deploy Docker Image and Create Endpoint Template
+
+1. Build Docker image based on the current repository (if anything has changed)
+```
+    docker build -t dubtor/hairx-runpod-worker-a1111:3.x.x .
+```
+2. Push image to dockerhub (if anything has changed)
+```    
+    docker push dubtor/hairx-runpod-worker-a1111:3.x.x
+```
+3. In Runpod, create new Template using the image
+  > Select „serverless“
+  > Docker Container image (public on dockerhub): 
+        1. dubtor/hairx-runpod-worker-a1111:3.x.x
+
+### Step 3/3 - Create Serverless Endpoint
+
+1. Select your created template
+2. Select Docker image you previously created
+3. Write down the serverless endpoint ID and URL, example: „p1on5b85l3dlqu“
+4. You can now send requests to the endpoint
 
 # A1111 Stable Diffusion | RunPod Serverless Worker
 
@@ -6,10 +90,6 @@ This is the source code for a [RunPod](https://runpod.io?ref=2xxro4sy)
 Serverless worker that uses the [Automatic1111 Stable Diffusion API](
 https://github.com/AUTOMATIC1111/stable-diffusion-webui) for inference.
 
-![Docker Pulls](https://img.shields.io/docker/pulls/ashleykza/runpod-worker-a1111?style=for-the-badge&logo=docker&label=Docker%20Pulls&link=https%3A%2F%2Fhub.docker.com%2Frepository%2Fdocker%2Fashleykza%2Frunpod-worker-a1111%2Fgeneral)
-![Worker Version](https://img.shields.io/github/v/tag/ashleykleynhans/runpod-worker-a1111?style=for-the-badge&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI2LjUuMywgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCAyMDAwIDIwMDAiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDIwMDAgMjAwMDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8c3R5bGUgdHlwZT0idGV4dC9jc3MiPgoJLnN0MHtmaWxsOiM2NzNBQjc7fQo8L3N0eWxlPgo8Zz4KCTxnPgoJCTxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0xMDE3Ljk1LDcxMS4wNGMtNC4yMiwyLjM2LTkuMTgsMy4wMS0xMy44NiwxLjgyTDM4Ni4xNyw1NTUuM2MtNDEuNzItMTAuNzYtODYuMDItMC42My0xMTYuNiwyOS43MwoJCQlsLTEuNCwxLjM5Yy0zNS45MiwzNS42NS0yNy41NSw5NS44LDE2Ljc0LDEyMC4zbDU4NC4zMiwzMjQuMjNjMzEuMzYsMTcuNCw1MC44Miw1MC40NSw1MC44Miw4Ni4zMnY4MDYuNzYKCQkJYzAsMzUuNDktMzguNDEsNTcuNjctNjkuMTUsMzkuOTRsLTcwMy4xNS00MDUuNjRjLTIzLjYtMTMuNjEtMzguMTMtMzguNzgtMzguMTMtNjYuMDJWNjY2LjYzYzAtODcuMjQsNDYuNDUtMTY3Ljg5LDEyMS45Mi0yMTEuNjYKCQkJTDkzMy44NSw0Mi4xNWMyMy40OC0xMy44LDUxLjQ3LTE3LjcsNzcuODMtMTAuODRsNzQ1LjcxLDE5NC4xYzMxLjUzLDguMjEsMzYuOTksNTAuNjUsOC41Niw2Ni41N0wxMDE3Ljk1LDcxMS4wNHoiLz4KCQk8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMTUyNy43NSw1MzYuMzhsMTI4Ljg5LTc5LjYzbDE4OS45MiwxMDkuMTdjMjcuMjQsMTUuNjYsNDMuOTcsNDQuNzMsNDMuODIsNzYuMTVsLTQsODU3LjYKCQkJYy0wLjExLDI0LjM5LTEzLjE1LDQ2Ljg5LTM0LjI1LDU5LjExbC03MDEuNzUsNDA2LjYxYy0zMi4zLDE4LjcxLTcyLjc0LTQuNTktNzIuNzQtNDEuOTJ2LTc5Ny40MwoJCQljMC0zOC45OCwyMS4wNi03NC45MSw1NS4wNy05My45Nmw1OTAuMTctMzMwLjUzYzE4LjIzLTEwLjIxLDE4LjY1LTM2LjMsMC43NS00Ny4wOUwxNTI3Ljc1LDUzNi4zOHoiLz4KCQk8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMTUyNC4wMSw2NjUuOTEiLz4KCTwvZz4KPC9nPgo8L3N2Zz4K&logoColor=%23ffffff&label=Worker%20Version&color=%23673ab7)
-
-</div>
 
 > [!IMPORTANT]
 > A1111 1.9.0 API format has changed dramatically and is not
