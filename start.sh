@@ -2,10 +2,12 @@
 
 echo "Worker Initiated"
 
+# comment out those 3 lines if you don't use the network volume, but use a docker image with everything pre-installed
 echo "Symlinking files from Network Volume"
 rm -rf /workspace && \
   ln -s /runpod-volume /workspace
 
+# boot up Stable Diffusion WebUI
 if [ -f "/workspace/venv/bin/activate" ]; then
     echo "Starting WebUI API"
     echo "(this continues in the background and can take quite some time)"
@@ -38,5 +40,6 @@ else
     echo "4. Ensure that you didn't assign any other invalid regions to your endpoint."
 fi
 
+# boot up RunPod handler, which keeps running and talks to WebUI locally
 echo "Starting RunPod Handler"
 python3 -u /rp_handler.py
