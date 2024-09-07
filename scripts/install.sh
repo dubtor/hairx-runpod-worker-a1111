@@ -105,6 +105,11 @@ cd /workspace/stable-diffusion-webui/models/ESRGAN
 aria2c -o 4x-UltraSharp.pth https://huggingface.co/ashleykleynhans/upscalers/resolve/main/4x-UltraSharp.pth
 aria2c -o lollypop.pth https://huggingface.co/ashleykleynhans/upscalers/resolve/main/lollypop.pth
 
+echo "=== Stable Diffusion embeddings ==="
+cd /workspace/stable-diffusion-webui/embeddings
+echo "Downloading 'Adult' embedding, just like in Novita. This is automatically enabled by just installing."
+aria2c -o AS-Adult.pt https://huggingface.co/mirroring/civitai_mirror/resolve/main/embeddings/AS-Adult.pt
+
 echo "Creating log directory"
 mkdir -p /workspace/logs
 
