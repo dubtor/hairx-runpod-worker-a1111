@@ -74,15 +74,21 @@ To optimize performance:
 ```
 3. In Runpod, create new Template using the image
   > Select „serverless“
+  > 5GB storage is enough
   > Docker Container image (public on dockerhub): 
         1. dubtor/hairx-runpod-worker-a1111:3.x.x
 
 ### Step 3/3 - Create Serverless Endpoint
 
 1. Select your created template
+
 2. Select Docker image you previously created
+
 3. Write down the serverless endpoint ID and URL, example: „p1on5b85l3dlqu“
+
 4. You can now send requests to the endpoint
+
+Open the postman collection in the repo, enter your servless endpoint ID, and test the endpoints.
 
 # A1111 Stable Diffusion | RunPod Serverless Worker
 
