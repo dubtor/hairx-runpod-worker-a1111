@@ -84,13 +84,16 @@ aria2c -o vae-ft-mse-840000-ema-pruned.safetensors https://huggingface.co/stabil
 echo "Downloading SD 1.5 ControlNet models"
 mkdir -p /workspace/stable-diffusion-webui/models/ControlNet
 cd /workspace/stable-diffusion-webui/models/ControlNet
-aria2c -o control_v11p_sd15_openpose.pth https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_openpose.pth
+#aria2c -o control_v11p_sd15_openpose.pth https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_openpose.pth
+
+# install only models that are actually used, to save space and processing time
 aria2c -o control_v11p_sd15_canny.pth https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_canny.pth
-aria2c -o control_v11f1p_sd15_depth.pth https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11f1p_sd15_depth.pth
-aria2c -o control_v11p_sd15_inpaint.pth https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_inpaint.pth
-aria2c -o control_v11p_sd15_lineart.pth https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_lineart.pth
-aria2c -o control_v1p_sd15_brightness.safetensors https://huggingface.co/ioclab/ioc-controlnet/resolve/main/models/control_v1p_sd15_brightness.safetensors
-aria2c -o control_v11f1e_sd15_tile.pth https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11f1e_sd15_tile.pth
+
+#aria2c -o control_v11f1p_sd15_depth.pth https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11f1p_sd15_depth.pth
+#aria2c -o control_v11p_sd15_inpaint.pth https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_inpaint.pth
+#aria2c -o control_v11p_sd15_lineart.pth https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_lineart.pth
+#aria2c -o control_v1p_sd15_brightness.safetensors https://huggingface.co/ioclab/ioc-controlnet/resolve/main/models/control_v1p_sd15_brightness.safetensors
+#aria2c -o control_v11f1e_sd15_tile.pth https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11f1e_sd15_tile.pth
 
 #echo "Downloading SDXL ControlNet models"
 #aria2c -o diffusers_xl_canny_full.safetensors https://huggingface.co/lllyasviel/sd_control_collection/resolve/main/diffusers_xl_canny_full.safetensors
@@ -107,7 +110,7 @@ aria2c -o lollypop.pth https://huggingface.co/ashleykleynhans/upscalers/resolve/
 
 echo "=== Stable Diffusion embeddings ==="
 cd /workspace/stable-diffusion-webui/embeddings
-echo "Downloading 'Adult' embedding, just like in Novita. This is automatically enabled by just installing."
+echo "Installing 'AS-Adult', to imitate Novita.ai. This is automatically enabled by just installing."
 aria2c -o AS-Adult.pt https://huggingface.co/mirroring/civitai_mirror/resolve/main/embeddings/AS-Adult.pt
 
 echo "Creating log directory"
