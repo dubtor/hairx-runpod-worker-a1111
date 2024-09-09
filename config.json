@@ -272,7 +272,7 @@
     "control_net_models_path": "",
     "control_net_modules_path": "",
     "control_net_unit_count": 3,
-    "control_net_model_cache_size": 1,
+    "control_net_model_cache_size": 2,
     "control_net_inpaint_blur_sigma": 7,
     "control_net_no_high_res_fix": false,
     "control_net_no_detectmap": false,
